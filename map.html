@@ -1,46 +1,35 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-<meta charset="UTF-8">
-<title>Rašytojų pėdsakai - Žemėlapis</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-<style>
-    body { margin:0; font-family: 'Open Sans', sans-serif; }
-    h1 { text-align:center; margin:1rem 0; color:#1a1a1a; }
-    #map { height: 90vh; width: 100%; }
-    a.back-link {
-        display:block; text-align:center; margin:0.5rem 0; text-decoration:none; font-weight:600; color:#0077cc;
-    }
-</style>
+  <meta charset="UTF-8">
+  <title>Rašytojų pėdsakai - Žemėlapis</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    #map { height: 100vh; width: 100%; }
+  </style>
 </head>
 <body>
+  <div id="map"></div>
+  <script>
+    const map = L.map('map').setView([55.1694, 23.8813], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-<h1>Rašytojų pėdsakai Žemėlapyje</h1>
-<a class="back-link" href="index.html">⬅ Grįžti į sąrašą</a>
-<div id="map"></div>
-
-<script>
-const map = L.map('map').setView([55.1694, 23.8813], 7);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-}).addTo(map);
-
-fetch('data/vietos.csv')
-.then(r => r.text())
-.then(text => {
-    const lines = text.trim().split('\\n').slice(1);
-    lines.forEach(row => {
-        const [id, name, lat, lon, rasytojas_id] = row.split(',');
-        if(lat && lon){
+    fetch('data/vietos.csv')
+      .then(r => r.text())
+      .then(text => {
+        const lines = text.trim().split('\n').slice(1);
+        lines.forEach(row => {
+          const [id, name, lat, lon, rasytojas_id] = row.split(',');
+          if (lat && lon) {
             L.marker([lat, lon])
-            .addTo(map)
-            .bindPopup(`<b>${name}</b><br>Rašytojas ID: ${rasytojas_id}`);
-        }
-    });
-});
-</script>
-
+              .addTo(map)
+              .bindPopup(`<b>${name}</b><br>Rašytojas ID: ${rasytojas_id}`);
+          }
+        });
+      });
+  </script>
 </body>
 </html>
