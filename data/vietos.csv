@@ -1,4 +1,4 @@
-id,pavadinimas,latitude,longitude,rasytojas_id
-1,Putino namas,54.6872,25.2797,1
-2,Maironio muziejus,54.8977,23.8869,2
-3,Čiurlionio muziejus,54.8966,23.9126,3
+id,writer_id,name,lat,lng,description
+1,1,Marijampolė,54.5599,23.3513,Gimtinė
+2,1,Vilnius,54.6872,25.2797,Veiklos vieta
+3,1,Kaunas,54.8985,23.9036,Universitetas
