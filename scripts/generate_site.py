@@ -1,21 +1,50 @@
 import pandas as pd
-from pathlib import Path
+from jinja2 import Environment, FileSystemLoader
+import os
 
-data_dir = Path("data")
-output_dir = Path(".")
+# Įkeliame CSV failus
+rasytojai = pd.read_csv('data/rasytojai.csv')
+nuotraukos = pd.read_csv('data/nuotraukos.csv')
+vietos = pd.read_csv('data/vietos.csv')
+kuriniai = pd.read_csv('data/kuriniai.csv')
 
-rasytojai = pd.read_csv(data_dir / "rasytojai.csv")
-nuotraukos = pd.read_csv(data_dir / "nuotraukos.csv")
+# Nustatome šablonų vietą
+env = Environment(loader=FileSystemLoader('templates'))
+template = env.get_template('writer_template.html')
 
-index_html = "<!DOCTYPE html><html lang='lt'><head><meta charset='UTF-8'><title>Rašytojų pėdsakai</title></head><body><h1>Rašytojų sąrašas</h1>"
+# Užtikrinam, kad išvesties katalogas egzistuotų
+os.makedirs('site', exist_ok=True)
 
-for _, row in rasytojai.iterrows():
-    r_id = row['id']
-    main_photo = nuotraukos[(nuotraukos['rasytojas_id']==r_id) & (nuotraukos['yra_pagrindine']==True)]
-    photo_tag = f"<img src='images/{main_photo.iloc[0]['failas']}' alt='{row['vardas']}' />" if not main_photo.empty else ""
-    index_html += f"<div><h2>{row['vardas']}</h2>{photo_tag}<p>{row['aprasymas']}</p></div>"
+# Generuojame kiekvieno rašytojo puslapį
+for _, r in rasytojai.iterrows():
+    r_id = r['id']
 
-index_html += "</body></html>"
+    # Nuotraukos pagal writer_id
+    writer_photos = nuotraukos[nuotraukos['writer_id'] == r_id]
+    main_photo = writer_photos.iloc[0]['filename'] if not writer_photos.empty else ''
 
-(output_dir / "index.html").write_text(index_html, encoding='utf-8')
-print("Index.html generated!")
+    # Kūriniai pagal rasytojas_id
+    writer_kuriniai = kuriniai[kuriniai['rasytojas_id'] == r_id]['pavadinimas'].tolist()
+
+    # Vietos pagal writer_id
+    writer_vietos = vietos[vietos['writer_id'] == r_id][['name', 'lat', 'lng', 'description']].to_dict('records')
+
+    # Sukuriame HTML puslapį iš šablono
+    html = template.render(
+        name=r['name'],
+        birth=r['birth'],
+        death=r['death'],
+        region=r['region'],
+        genre=r['genre'],
+        biography=r['biography'],
+        photo=main_photo,
+        photos=writer_photos.to_dict('records'),
+        kuriniai=writer_kuriniai,
+        places=writer_vietos
+    )
+
+    # Išsaugome sugeneruotą failą
+    with open(f'site/writer_{r_id}.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+
+print("✅ Svetainės puslapiai sugeneruoti sėkmingai.")
