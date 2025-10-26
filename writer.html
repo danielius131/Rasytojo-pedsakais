@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rašytojo profilis</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #fafafa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #3b3b98;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .writer-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .writer-header img {
+      border-radius: 12px;
+      width: 220px;
+      height: 280px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .writer-info h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #2d2d2d;
+    }
+
+    .writer-info p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .bio {
+      margin-top: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    #map {
+      height: 400px;
+      margin-top: 2rem;
+      border-radius: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #3b3b98;
+      color: white;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Rašytojo biografija</h1>
+  </header>
+
+  <main>
+    <div class="writer-header">
+      <img src="images/putinas.jpg" alt="Vincas Mykolaitis-Putinas">
+      <div class="writer-info">
+        <h1>Vincas Mykolaitis-Putinas</h1>
+        <p><strong>Gimimo data:</strong> 1893 m. sausio 6 d.</p>
+        <p><strong>Mirties data:</strong> 1967 m. birželio 7 d.</p>
+        <p><strong>Regionas:</strong> Marijampolės apskritis</p>
+        <p><strong>Žanras:</strong> Romanas, poezija, drama</p>
+      </div>
+    </div>
+
+    <section class="bio">
+      <h2>Trumpa biografija</h2>
+      <p>
+        Vincas Mykolaitis-Putinas buvo vienas žymiausių XX a. Lietuvos rašytojų, poetas, prozininkas, dramaturgas ir literatūros mokslininkas. 
+        Jo garsiausias kūrinys — romanas „Altorių šešėly“, kuriame nagrinėjama dvasinė žmogaus kova tarp pašaukimo ir pareigos. 
+        Putino kūryba žymi lietuvių modernizmo pradžią.
+      </p>
+    </section>
+
+    <section class="gallery">
+      <img src="images/putinas1.jpg" alt="Putinas jaunystėje">
+      <img src="images/putinas2.jpg" alt="Putinas prie stalo">
+      <img src="images/putinas3.jpg" alt="Putino atminimo vieta">
+    </section>
+
+    <section>
+      <h2>Gyvenimo ir kūrybos vietos</h2>
+      <div id="map"></div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Rašytojų pėdsakais projektas
+  </footer>
+
+  <script>
+    // Inicijuojam žemėlapį
+    var map = L.map('map').setView([54.6872, 25.2797], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Pažymime vietas (pavyzdžiui)
+    var places = [
+      { name: "Marijampolė (gimtinė)", coords: [54.5599, 23.3513] },
+      { name: "Vilnius (gyvenimo vieta)", coords: [54.6872, 25.2797] },
+      { name: "Kaunas (universitetas)", coords: [54.8985, 23.9036] }
+    ];
+
+    places.forEach(p => {
+      L.marker(p.coords).addTo(map).bindPopup(p.name);
+    });
+  </script>
+</body>
+</html>
