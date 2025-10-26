@@ -46,7 +46,7 @@ for _, r in rasytojai.iterrows():
         genre=r['genre'],
         biography=r['biography'],
         photo=main_photo,
-        photos=all_photos.to_dict('records'),
+        photos = [{'failas': f} for f in all_photos],
         kuriniai=writer_kuriniai,
         places=writer_vietos
     )
