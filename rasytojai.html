@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <title>Rašytojų sąrašas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+            .filters input, .filters select {
+                padding: 0.5rem 1rem;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+
+            .card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+        .card-info {
+            padding: 1rem;
+        }
+
+            .card-info h3 {
+                margin: 0 0 0.5rem 0;
+                color: #1a1a1a;
+            }
+
+            .card-info p {
+                margin: 0.2rem 0;
+                color: #555;
+                font-size: 0.95rem;
+            }
+    </style>
+</head>
+<body>
+
+    <h1>Rašytojų sąrašas</h1>
+
+    <div class="filters">
+        <input type="text" id="searchInput" placeholder="Ieškoti pagal vardą, pavardę ar kūrinį">
+
+        <select id="vietuFilter">
+            <option value="">Visi lankytinų vietų kiekiai</option>
+            <option value="1">Tik su 1 vieta</option>
+            <option value="2">2 ir daugiau</option>
+        </select>
+
+        <select id="laikotarpisFilter">
+            <option value="">Visi laikotarpiai</option>
+            <option value="1900-1950">1900–1950</option>
+            <option value="1951-2000">1951–2000</option>
+            <option value="2001-2025">2001–2025</option>
+        </select>
+
+        <select id="regionasFilter">
+            <option value="">Visi regionai</option>
+            <option value="Vilnius">Vilnius</option>
+            <option value="Kaunas">Kaunas</option>
+            <option value="Panevėžys">Panevėžys</option>
+        </select>
+
+        <select id="zanrasFilter">
+            <option value="">Visi žanrai</option>
+            <option value="Poezija">Poezija</option>
+            <option value="Proza">Proza</option>
+            <option value="Eseistika">Eseistika</option>
+        </select>
+    </div>
+
+    <div class="grid-container" id="rasytojai-container"></div>
+
+    <script>
+async function loadData(){
+  const [rasytojaiCSV, kuriniaiCSV, vietosCSV] = await Promise.all([
+    fetch('data/rasytojai.csv').then(r=>r.text()),
+    fetch('data/kuriniai.csv').then(r=>r.text()),
+    fetch('data/vietos.csv').then(r=>r.text())
+  ]);
+
+  const rasytojai = rasytojaiCSV.trim().split('\n').slice(1).map(r=>r.split(','));
+  const kuriniai = kuriniaiCSV.trim().split('\n').slice(1).map(r=>r.split(','));
+  const vietos = vietosCSV.trim().split('\n').slice(1).map(r=>r.split(','));
+
+  // suskaičiuojam vietų skaičių pagal rašytoją
+  const vietuKiekis = {};
+  vietos.forEach(v=>{
+    const rId = v[4];
+    vietuKiekis[rId] = (vietuKiekis[rId]||0)+1;
+  });
+
+  const container = document.getElementById('rasytojai-container');
+
+  function renderList(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const vietuFilter = document.getElementById('vietuFilter').value;
+    const laikotarpis = document.getElementById('laikotarpisFilter').value;
+    const regionas = document.getElementById('regionasFilter').value;
+    const zanras = document.getElementById('zanrasFilter').value;
+
+    container.innerHTML = '';
+
+    rasytojai.forEach(r=>{
+      const [id, vardas, gimimo_data, aprasymas, region, zanrasRa] = r;
+      const metai = parseInt(gimimo_data.split('-')[0]);
+      const vietu = vietuKiekis[id] || 0;
+
+      // susieti kūrinius
+      const autoriausKuriniai = kuriniai.filter(k=>k[2]===id).map(k=>k[1].toLowerCase());
+
+      // filtravimas
+      if(search && !(
+          vardas.toLowerCase().includes(search) ||
+          autoriausKuriniai.some(k=>k.includes(search))
+      )) return;
+
+      if(vietuFilter==='1' && vietu!==1) return;
+      if(vietuFilter==='2' && vietu<2) return;
+
+      if(laikotarpis){
+        const [start,end]=laikotarpis.split('-').map(Number);
+        if(metai<start || metai>end) return;
+      }
+
+      if(regionas && region!==regionas) return;
+      if(zanras && zanrasRa!==zanras) return;
+
+      container.innerHTML += `
+        <div class="card">
+          <img src="images/${id}.jpg" alt="${vardas}" onerror="this.style.display='none'">
+          <div class="card-info">
+            <h3>${vardas}</h3>
+            <p><b>Gimimo data:</b> ${gimimo_data}</p>
+            <p><b>Regionas:</b> ${region}</p>
+            <p><b>Žanras:</b> ${zanrasRa}</p>
+            <p><b>Lankytinų vietų:</b> ${vietu}</p>
+          </div>
+        </div>`;
+    });
+  }
+
+  document.querySelectorAll('.filters input, .filters select').forEach(el=>{
+    el.addEventListener('input', renderList);
+    el.addEventListener('change', renderList);
+  });
+
+  renderList();
+}
+
+loadData();
+    </script>
+</body>
+</html>
