@@ -21,7 +21,15 @@ for _, r in rasytojai.iterrows():
 
     # Nuotraukos pagal writer_id
     writer_photos = nuotraukos[nuotraukos['rasytojas_id'] == r_id]
-    main_photo = writer_photos.iloc[0]['failas'] if not writer_photos.empty else ''
+
+    # Pagrindinė nuotrauka
+    main_photo_row = writer_photos[writer_photos['yra_pagrindine'] == True]
+    main_photo = main_photo_row.iloc[0]['failas'] if not main_photo_row.empty else writer_photos.iloc[0]['failas']
+
+    # Visos nuotraukos ciklu
+    all_photos = []
+    for _, row in writer_photos.iterrows():
+        all_photos.append(row['failas'])
 
     # Kūriniai pagal rasytojas_id
     writer_kuriniai = kuriniai[kuriniai['rasytojas_id'] == r_id]['pavadinimas'].tolist()
@@ -38,7 +46,7 @@ for _, r in rasytojai.iterrows():
         genre=r['genre'],
         biography=r['biography'],
         photo=main_photo,
-        photos=writer_photos.to_dict('records'),
+        photos = [{'failas': f} for f in all_photos],
         kuriniai=writer_kuriniai,
         places=writer_vietos
     )
