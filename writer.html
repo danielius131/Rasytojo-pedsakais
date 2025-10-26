@@ -74,7 +74,7 @@
 
       document.getElementById('writer-content').innerHTML = `
         <div class="writer-header">
-          <img src="images/${writer.photo}" alt="${writer.name}">
+          <img src="images/${mainphoto}" alt="${writer.name}">
           <div class="writer-info">
             <h1>${writer.name}</h1>
             <p><strong>Gimimo data:</strong> ${writer.birth}</p>
@@ -90,7 +90,7 @@
         </section>
 
         <section class="gallery">
-          ${writerPhotos.map(p => `<img src="images/${p.filename}" alt="${writer.name}">`).join('')}
+          ${writerPhotos.map(p => `<img src="images/${p.failas}" alt="${writer.name}">`).join('')}
         </section>
 
         <section>
