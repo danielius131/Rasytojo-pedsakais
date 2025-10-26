@@ -20,7 +20,7 @@ for _, r in rasytojai.iterrows():
     r_id = r['id']
 
     # Nuotraukos pagal writer_id
-    writer_photos = nuotraukos[nuotraukos['writer_id'] == r_id]
+    writer_photos = nuotraukos[nuotraukos['rasytojas_id'] == r_id]
     main_photo = writer_photos.iloc[0]['filename'] if not writer_photos.empty else ''
 
     # Kūriniai pagal rasytojas_id
