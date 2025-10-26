@@ -1,53 +1,71 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-  <meta charset="UTF-8">
-  <title>Rašytojų pėdsakai</title>
-  <style>
-    body { font-family: sans-serif; margin: 2rem; background: #fafafa; }
-    .writer { background: white; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-    img { width: 150px; border-radius: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Rašytojų pėdsakai</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background: #fafafa;
+        }
+
+        .writer {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            width: 150px;
+            border-radius: 10px;
+            display: block;
+            margin-top: 0.5rem;
+        }
+    </style>
 </head>
 <body>
-  <h1>Rašytojų pėdsakai</h1>
-  <p><a href="map.html">Peržiūrėti žemėlapyje</a></p>
-  <div id="content"></div>
+    <h1>Rašytojų pėdsakai</h1>
+    <p><a href="map.html">Peržiūrėti žemėlapyje</a></p>
+    <div id="content"></div>
 
-  <script>
-    async function loadData() {
-      const [writers, photos] = await Promise.all([
-        fetch('data/rasytojai.csv').then(r => r.text()),
-        fetch('data/nuotraukos.csv').then(r => r.text())
-      ]);
+    <script>
+        async function loadData() {
+            const [writers, photos] = await Promise.all([
+                fetch('data/rasytojai.csv').then(r => r.text()),
+                fetch('data/nuotraukos.csv').then(r => r.text())
+            ]);
 
-      const writerRows = writers.trim().split('\n').slice(1);
-      const photoRows = photos.trim().split('\n').slice(1);
+            const writerRows = writers.trim().split('\n').slice(1);
+            const photoRows = photos.trim().split('\n').slice(1);
 
-      const photoMap = {};
-      for (const row of photoRows) {
-        const [id, rid, file, isMain] = row.split(',');
-        if (isMain === 'True') photoMap[rid] = file;
-      }
+            const photoMap = {};
+            for (const row of photoRows) {
+                const [id, rid, file, isMain] = row.split(',');
+                if (isMain === 'True') photoMap[rid] = file;
+            }
 
-      const container = document.getElementById('content');
-      for (const row of writerRows) {
-        const [id, vardas, gimimo_data, aprasymas] = row.split(',');
-        const img = photoMap[id] ? `<img src="images/${photoMap[id]}" alt="${vardas}">` : '';
-          container.innerHTML += `
-        <a href="rasytojai/${id}.html" class="writer">
-          <div class="writer">
-            <h2>${vardas}</h2>
-            <p><b>Gimimo data:</b> ${gimimo_data}</p>
-            <p>${aprasymas}</p>
-            ${img}
-          </div>
-        </a>
-        `;
-      }
-    }
+            const container = document.getElementById('content');
+            for (const row of writerRows) {
+                const [id, vardas, gimimo_data, aprasymas] = row.split(',');
+                const img = photoMap[id] ? `<img src="images/${photoMap[id]}" alt="${vardas}">` : '';
+                container.innerHTML += `
+              <a href="writer.html?id=${id}" class="writer">
+                <h2>${vardas}</h2>
+                <p><b>Gimimo data:</b> ${gimimo_data}</p>
+                <p>${aprasymas}</p>
+                ${img}
+              </a>
+            `;
+            }
+        }
 
-    loadData();
-  </script>
+        loadData();
+    </script>
 </body>
 </html>
