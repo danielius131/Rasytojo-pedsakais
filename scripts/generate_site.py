@@ -21,7 +21,7 @@ for _, r in rasytojai.iterrows():
 
     # Nuotraukos pagal writer_id
     writer_photos = nuotraukos[nuotraukos['rasytojas_id'] == r_id]
-    main_photo = writer_photos.iloc[0]['filename'] if not writer_photos.empty else ''
+    main_photo = writer_photos.iloc[0]['failas'] if not writer_photos.empty else ''
 
     # Kūriniai pagal rasytojas_id
     writer_kuriniai = kuriniai[kuriniai['rasytojas_id'] == r_id]['pavadinimas'].tolist()
