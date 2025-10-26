@@ -34,13 +34,15 @@
       for (const row of writerRows) {
         const [id, vardas, gimimo_data, aprasymas] = row.split(',');
         const img = photoMap[id] ? `<img src="images/${photoMap[id]}" alt="${vardas}">` : '';
-        container.innerHTML += `
+          container.innerHTML += `
+        <a href="writer.html?id=${id}" style="text-decoration:none; color:inherit;">
           <div class="writer">
             <h2>${vardas}</h2>
             <p><b>Gimimo data:</b> ${gimimo_data}</p>
             <p>${aprasymas}</p>
             ${img}
           </div>
+        </a>
         `;
       }
     }
