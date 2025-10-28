@@ -70,7 +70,9 @@
       }
 
       const writerPhotos = photos.filter(p => p.writer_id === id);
+      console.log(writerPhotos)
       const writerPlaces = places.filter(p => p.writer_id === id);
+      console.log(writerPlaces)
       //<img src="images/${mainphoto}" alt="${writer.name}">
       document.getElementById('writer-content').innerHTML = `
         <div class="writer-header">
