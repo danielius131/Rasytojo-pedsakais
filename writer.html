@@ -71,10 +71,10 @@
 
       const writerPhotos = photos.filter(p => p.writer_id === id);
       const writerPlaces = places.filter(p => p.writer_id === id);
-
+      //<img src="images/${mainphoto}" alt="${writer.name}">
       document.getElementById('writer-content').innerHTML = `
         <div class="writer-header">
-          <img src="images/${mainphoto}" alt="${writer.name}">
+          
           <div class="writer-info">
             <h1>${writer.name}</h1>
             <p><strong>Gimimo data:</strong> ${writer.birth}</p>
