@@ -2,3 +2,5 @@ id,writer_id,name,lat,lng,description
 1,1,Marijampolė,54.5599,23.3513,Gimtinė
 2,1,Vilnius,54.6872,25.2797,Veiklos vieta
 3,1,Kaunas,54.8985,23.9036,Universitetas
+4,2,Kaunas,54.896749,23.884232,Muziejus
+5,3,Druskininkai,54.019677,23.976399,Paminklas
