@@ -3,4 +3,5 @@ id,writer_id,name,lat,lng,description
 2,1,Vilnius,54.6872,25.2797,Veiklos vieta
 3,1,Kaunas,54.8985,23.9036,Universitetas
 4,2,Kaunas,54.8967,23.8842,Muziejus
-5,3,Druskininkai,54.0196,23.9763,Paminklas
+5,2,Kaunas,54.8972,23.8889,Katedra
+6,3,Druskininkai,54.0196,23.9763,Paminklas
