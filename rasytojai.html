@@ -146,7 +146,7 @@ async function loadData(){
     container.innerHTML = '';
 
     rasytojai.forEach(r=>{
-      const [id, vardas, gimimo_data, aprasymas, region, zanrasRa] = r;
+      const [id, vardas, gimimo_data, mirties_data, region, zanrasRa, photo, aprasymas] = r;
       const metai = parseInt(gimimo_data.split('-')[0]);
       const vietu = vietuKiekis[id] || 0;
 
@@ -172,7 +172,7 @@ async function loadData(){
 
       container.innerHTML += `
         <div class="card">
-          <img src="images/${id}.jpg" alt="${vardas}" onerror="this.style.display='none'">
+          <img src="images/${photo}" alt="${vardas}" onerror="this.style.display='none'">
           <div class="card-info">
             <h3>${vardas}</h3>
             <p><b>Gimimo data:</b> ${gimimo_data}</p>
