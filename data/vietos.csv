@@ -6,3 +6,6 @@ id,writer_id,name,lat,lng,description
 5,2,Kaunas,54.8972,23.8889,Katedra
 6,3,Druskininkai,54.0196,23.9763,Paminklas
 7,3,Kaunas,54.9004,23.9120, Dailės muziejus
+6,4,Tolmingkiemis,54.9181,22.5786,Kristijono Donelaičio gyvenimo ir kūrybos vieta
+7,5,Bukantė,56.0750,22.0260,Žemaitės gimtinė
+8,6,Niūronys,55.5386,25.0844,Jono Biliūno gimtinė

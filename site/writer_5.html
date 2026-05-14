@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Žemaitė - Rašytojo profilis</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Žemaitė</h1>
+  </header>
+
+  <main>
+    <div class="writer-header">
+      <img src="../images/zemaites.jpg" alt="Žemaitė">
+      <div class="writer-info">
+        <p><strong>Gimimo data:</strong> 1845-06-04</p>
+        <p><strong>Mirties data:</strong> 1921-12-07</p>
+        <p><strong>Regionas:</strong> Šiaulių apskritis</p>
+        <p><strong>Žanras:</strong> Proza</p>
+      </div>
+    </div>
+
+    <section class="bio">
+      <h2>Trumpa biografija</h2>
+      <p>Lietuvių rašytoja, realistinės prozos atstovė.</p>
+    </section>
+
+    <section>
+      <h2>Kūriniai</h2>
+      <ul>
+        
+          <li>Marti</li>
+        
+      </ul>
+    </section>
+
+    <section class="gallery">
+      <h2>Nuotraukos</h2>
+      
+        <img src="../images/" alt="Žemaitė">
+      
+    </section>
+
+    <section>
+      <h2>Gyvenimo ir kūrybos vietos</h2>
+      <div id="map" style="height:400px; border-radius:12px;"></div>
+    </section>
+  </main>
+
+  <footer>© 2025 Rašytojų pėdsakais</footer>
+
+  <script>
+    const map = L.map('map').setView([55.1694, 23.8813], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+    const places = [{"description": "\u017demait\u0117s gimtin\u0117", "lat": 56.075, "lng": 22.026, "name": "Bukant\u0117"}];
+    places.forEach(p => {
+      if (p.lat && p.lng) {
+        L.marker([+p.lat, +p.lng]).addTo(map).bindPopup(`<b>${p.name}</b><br>${p.description || ''}`);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jonas Biliūnas - Rašytojo profilis</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Jonas Biliūnas</h1>
+  </header>
+
+  <main>
+    <div class="writer-header">
+      <img src="../images/biliunas.jpg" alt="Jonas Biliūnas">
+      <div class="writer-info">
+        <p><strong>Gimimo data:</strong> 1879-04-11</p>
+        <p><strong>Mirties data:</strong> 1907-12-08</p>
+        <p><strong>Regionas:</strong> Anykščių kraštas</p>
+        <p><strong>Žanras:</strong> Proza</p>
+      </div>
+    </div>
+
+    <section class="bio">
+      <h2>Trumpa biografija</h2>
+      <p>Lietuvių prozininkas, lyrinės novelės pradininkas.</p>
+    </section>
+
+    <section>
+      <h2>Kūriniai</h2>
+      <ul>
+        
+          <li>Kliudžiau</li>
+        
+          <li>Laimės žiburys</li>
+        
+      </ul>
+    </section>
+
+    <section class="gallery">
+      <h2>Nuotraukos</h2>
+      
+        <img src="../images/" alt="Jonas Biliūnas">
+      
+    </section>
+
+    <section>
+      <h2>Gyvenimo ir kūrybos vietos</h2>
+      <div id="map" style="height:400px; border-radius:12px;"></div>
+    </section>
+  </main>
+
+  <footer>© 2025 Rašytojų pėdsakais</footer>
+
+  <script>
+    const map = L.map('map').setView([55.1694, 23.8813], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+    const places = [{"description": "Jono Bili\u016bno gimtin\u0117", "lat": 55.5386, "lng": 25.0844, "name": "Ni\u016bronys"}];
+    places.forEach(p => {
+      if (p.lat && p.lng) {
+        L.marker([+p.lat, +p.lng]).addTo(map).bindPopup(`<b>${p.name}</b><br>${p.description || ''}`);
+      }
+    });
+  </script>
+</body>
+</html>
